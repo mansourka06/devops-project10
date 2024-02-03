@@ -1,0 +1,11 @@
+{
+  "name": "my-nodejs-app",
+  "version": "1.0.0",
+  "description": "This simple Node.js application for DevOps Project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Mansour KA",
+  "license": "MIT"
+}
