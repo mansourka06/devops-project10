@@ -1,0 +1,45 @@
+###################################################################################
+# Description:
+###################################################################################
+# With this workflow in place, every time you push changes to the specified branch, 
+# the workflow will run. It will build the Docker image, login to Docker Hub 
+# using your credentials, tag the image, and push it to Docker Hub.
+
+name: Docker Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_IMAGE_NAME: mk-devops-webapp
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.DOCKER_IMAGE_NAME }}:latest .
+
+      - name: Run tests
+        run: |
+          # Replace the following command with your test command
+          docker run --rm ${{ env.DOCKER_IMAGE_NAME }}:latest npm test
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:latest
