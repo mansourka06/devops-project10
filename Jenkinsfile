@@ -37,8 +37,8 @@ pipeline {
                 // Tag and push Docker image to DockerHub
                 sh '''
                     docker build -t $DOCKER_IMAGE_NAME:latest .
-                    docker tag \$DOCKER_IMAGE_NAME:latest \$DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:latest
-                    docker push \$DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:latest
+                    docker tag \$DOCKER_IMAGE_NAME:latest \$DOCKERHUB_USERNAME\/$DOCKER_IMAGE_NAME:latest
+                    docker push \$DOCKERHUB_USERNAME\/$DOCKER_IMAGE_NAME:latest
                 '''
             }
         }
