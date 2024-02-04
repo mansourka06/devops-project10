@@ -2,8 +2,10 @@ name: Build, Test and Deploy docker webapp image
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+     - main
+    # tags:
+    #   - '*'
 
 jobs:
   build_and_test:
