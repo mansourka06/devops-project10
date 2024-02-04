@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = "nodejs-app"
         DOCKER_CONTAINER_NAME = "my-nodejs-app"
-        DOCKER_IMAGE_VERSION= v1
+        DOCKER_IMAGE_VERSION = "v1"
         DOCKERHUB_USERNAME = "mmansourka"
     }
 
