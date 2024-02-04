@@ -55,5 +55,6 @@ jobs:
 
       - name: Tag and push Docker image to DockerHub
         run: |
+          docker build -t my-devops-webapp:latest .
           docker tag my-devops-webapp:latest ${{ secrets.DOCKERHUB_USERNAME }}/devops-webapp:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-webapp:latest
