@@ -32,17 +32,17 @@ jobs:
       - name: Run and Test Docker container
         run: |
           docker run --rm ${{ env.DOCKER_IMAGE_NAME }}:latest npm test
-        # docker run -d --name ${{ env.DOCKER_CONTAINER_NAME }} -p 3000:3000 ${{ env.DOCKER_IMAGE_NAME }}:latest
-  
-      # - name: Wait for container to start
-      #   run: sleep 10
+          docker run -d --name ${{ env.DOCKER_CONTAINER_NAME }} -p 3000:3000 ${{ env.DOCKER_IMAGE_NAME }}:latest
+
+      - name: Wait for container to start
+        run: sleep 10
   
       # - name: Test container accessibility
       #   run: |
       #       curl -L http://localhost:3000
   
-      # - name: Stop and remove container
-      #   run: docker stop ${{ env.DOCKER_CONTAINER_NAME }} && docker rm ${{ env.DOCKER_CONTAINER_NAME }}
+      - name: Stop and remove container
+        run: docker stop ${{ env.DOCKER_CONTAINER_NAME }} && docker rm ${{ env.DOCKER_CONTAINER_NAME }}
 
   # Deployment Stage
   deploy:
@@ -58,3 +58,4 @@ jobs:
           docker build -t my-devops-webapp:latest .
           docker tag my-devops-webapp:latest ${{ secrets.DOCKERHUB_USERNAME }}/devops-webapp:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-webapp:latest
+        continue-on-error: true
