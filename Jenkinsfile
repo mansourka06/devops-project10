@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = 'nodejs-app'
-        DOCKER_CONTAINER_NAME = 'my-nodejs-app'
+        DOCKER_IMAGE_NAME = "nodejs-app"
+        DOCKER_CONTAINER_NAME = "my-nodejs-app"
+        DOCKERHUB_USERNAME = "mmansourka"
     }
 
     stages {
@@ -37,7 +38,7 @@ pipeline {
                 // Tag and push Docker image to DockerHub
                 sh '''
                     docker build -t ${DOCKER_IMAGE_NAME}:latest .
-                    docker tag ${DOCKER_IMAGE_NAME}:latest \${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
+                    docker tag ${DOCKER_IMAGE_NAME}:latest ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
                     docker push ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE_NAME}:latest
                 '''
             }
