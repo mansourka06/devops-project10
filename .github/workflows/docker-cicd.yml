@@ -9,8 +9,10 @@ name: Docker Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
+      tags:
+        - '*'
 
 jobs:
   build-and-test:
