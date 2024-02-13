@@ -1,8 +1,20 @@
 # DevOps CI/CD Project10
 - Welcome to my DevSecOps CI/CD project! This project aims to demonstrate continuous integration and continuous deployment (CI/CD) practices using a variety of tools.
 
-- Then, the goal is to deploy a NodeJs App on **Kubernetes** Cluster and Automating it with **Argo-cd** and **Ansible** via **jenkins** Pipeline.
+- Then, the goal is to deploy a NodeJs App on **Kubernetes** Cluster and Automating it with **Argo CD** and **Ansible** via **Jenkins** Pipeline.
 For this we are using **Vagrant** to create a base instance called the jenkins server than from this intance we setup pipeline, which build docker image and push it to DockerHub, than setup **minikube** instance and **ArgoCD** inside it to deploy the application. We chose **Ansible** to automate the installation of all tools used in this project.
+
+## Pre-requisites
+Tools you must know for a deep understanding of this project or before doing it. 
+
+- [git and github](https://www.freecodecamp.org/news/git-and-github-for-beginners/)
+- [Linux and basics in shell](https://www.geeksforgeeks.org/introduction-linux-shell-shell-scripting/)
+- [Ansible](https://docs.ansible.com/ansible/latest/)
+- [Jenkins](https://www.jenkins.io/doc/)
+- [Docker](https://docs.docker.com/)
+- [Kubernetes](https://kubernetes.io/docs/home/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
 
 
 ## Definition of Used Tools
@@ -28,10 +40,13 @@ We use Docker for containerization, enabling us to package our application and i
 - ### Kubernetes
 Kubernetes serves as our container management tool, providing orchestration and automation for deploying, scaling, and managing containerized applications.
 
+- ### Argo CD
+Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes which automate and manage application deployments and lifecycle.
+
 ## Completion steps 
 - **Step 1**: → Setup Vagrantfile to deploy and configure a simple Infrastructure(servers). 
 
-- **Step 1**: → Create Ansible roles to automate the provisioning of our infrastructure: installation and configuration of Jenkins, Docker, minikube and ArgoCD.
+- **Step 2**: → Create Ansible roles to automate the provisioning of our infrastructure: installation and configuration of Jenkins, Docker, minikube and ArgoCD.
 
 - **Step 3**: → Setup Sonarqube and jenkins 
 
@@ -40,19 +55,6 @@ Kubernetes serves as our container management tool, providing orchestration and 
 - **Step 5**: → Deploy the application with kubernetes configuration files in minikube instance
 
 - **Step 6**: → Deploy Application with ArgoCD 
-
-
-## Pre-requisites
-Tools you must know for a deep understanding of this project or before doing it. 
-
-- [git and github]()
-- [Linux and basics in shell]()
-- [Ansible]()
-- [Jenkins]()
-- [Docker]()
-- [Kubernetes]()
-- [ArgoCD]()
-
 
 ## Get Start => Project Usage
 To get started with this project, follow these steps:
