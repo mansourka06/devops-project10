@@ -1,0 +1,42 @@
+---
+#tasks for docker uninstall
+- debug:
+    msg: "Launch Docker uninstall"
+
+- name: Check if Docker is present on "{{ ansible_hostname }}"
+  command: docker --version
+  register: docker_check
+  ignore_errors: true
+
+- name: Debug message if Docker is not present
+  debug:
+    msg: "Docker is not installed on {{ ansible_hostname }}"
+  when: docker_check.rc != 0
+
+- name: Docker uninstall tasks
+  block:
+    - name: Stop Docker service
+      systemd:
+        name: docker
+        state: stopped
+        enabled: no
+    
+    - name: Ensure if Docker uninstall script is present
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+
+    - name: Remove Docker installation
+      shell: "sh /tmp/get-docker.sh --uninstall -y"
+      register: docker_uninstall
+    
+    - name: Remove Docker uninstall script
+      file:
+        path: /tmp/get-docker.sh
+        state: absent
+
+    - name: Debug message for docker uninstall
+      debug:
+        msg: "Docker is successfully Uninstalled on {{ ansible_hostname }}"
+      when: docker_uninstall.rc == 0
+  when: docker_check.rc == 0

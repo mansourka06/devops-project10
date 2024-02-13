@@ -1,0 +1,18 @@
+---
+all:
+  children:
+    devops_infra:
+      children:
+        k8s_cluster:
+          hosts:
+            k8s_node:
+              ansible_host: 192.168.1.19
+              ansible_user: ansible
+        jenkins_servers:
+          hosts:
+            jenkins_host:
+              ansible_host: 192.168.1.19
+              ansible_user: ansible
+
+
+

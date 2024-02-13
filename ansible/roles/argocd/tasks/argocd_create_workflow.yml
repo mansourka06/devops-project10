@@ -1,0 +1,10 @@
+---
+# tasks file for argocd_workflow
+
+- name: Install Argo Workflows
+  shell: |
+    kubectl create namespace argo
+    kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo-workflows/stable/manifests/quick-start-postgres.yaml
+  args:
+    executable: /bin/bash
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'

@@ -1,0 +1,54 @@
+---
+# roles/jenkins/tasks/jenkins_install_redhat.yml
+- debug:
+    msg: "Launch Jenkins installation"
+
+- name: Update and upgrade yum packages
+  yum:
+    name: '*'
+    state: latest
+    update_cache: true
+
+- name: Install necessary prerequisites packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ prerequisites_packages }}"
+
+- name: Download Jenkins repository file
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Import Jenkins repository key
+  rpm_key:
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+    state: present
+
+- name: Install Jenkins package
+  yum:
+    name: jenkins
+    state: present
+
+- name: Start Jenkins service
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+  register: jenkins_service
+
+- name: End jenkins install 
+  debug:
+    msg: "Jenkins is installed successfully on {{ ansible_hostname }}"
+  when: jenkins_service.status == "running"
+
+- name: show Jenkins initial admin password
+  shell: |
+     cat /var/lib/jenkins/secrets/initialAdminPassword
+  args:
+    executable: /bin/bash
+  register: jenkins_int_pwd
+
+- name: show Jenkins initial admin password
+  debug:
+    msg: "Jenkins initial admin password is: {{ jenkins_int_pwd }}"

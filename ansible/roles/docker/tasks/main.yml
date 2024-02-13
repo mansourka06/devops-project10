@@ -1,0 +1,14 @@
+---
+# ./role/docker/main.yml
+
+- name: Docker Install
+  import_tasks: docker_install.yml
+  tags:
+    - docker_install
+
+- name: Docker Uninstall
+  import_tasks: docker_uninstall.yml
+  tags:
+    - docker_uninstall
+    - never
+  

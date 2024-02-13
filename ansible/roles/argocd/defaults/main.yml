@@ -1,0 +1,5 @@
+---
+# defaults file for ansible/roles/argocd
+
+argocd_host: "{{ ansible_default_ipv4.address }}"
+argocd_port: 8080

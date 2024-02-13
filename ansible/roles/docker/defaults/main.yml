@@ -1,0 +1,10 @@
+---
+# defaults vars file for jenkins
+
+prerequisites_packages:
+  - curl
+  - openssh-server
+  - ca-certificates
+  - wget 
+
+docker_user: "{{ ansible_user }}" #docker default user

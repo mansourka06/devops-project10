@@ -1,0 +1,60 @@
+---
+# tasks for docker installation
+- debug:
+    msg: "Launch Docker installation"
+
+- name: Check if Docker is installed
+  command: docker --version
+  register: docker_check
+  ignore_errors: true
+
+- name: Debug message if Docker is installed
+  debug:
+    msg: "Docker is already installed on {{ ansible_hostname }}"
+  when: docker_check.rc == 0
+
+- name: Ensure Docker service is running if installed
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  when: docker_check.rc == 0
+
+- name: Docker installation tasks
+  block:
+    - name: Download Docker installation script
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+
+    - name: Run Docker installation script
+      shell: "sh /tmp/get-docker.sh"
+
+    - name: Remove Docker installation script
+      file:
+        path: /tmp/get-docker.sh
+        state: absent
+
+    - name: Add user to docker group
+      user:
+        name: "{{ docker_user }}"
+        groups: docker
+        append: yes
+
+    - name: Enable Docker service
+      service:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Check Docker service status
+      systemd:
+        name: docker
+        state: started
+      register: docker_service
+
+    - name: Debug message for Docker installation status
+      debug:
+        msg: "Docker is successfully Installed and Running..."
+      when: docker_service.status == 'started'
+  when: docker_check.rc != 0

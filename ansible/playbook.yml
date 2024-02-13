@@ -1,0 +1,39 @@
+---
+# playbook.yml
+
+- name: Ping all servers in inventory
+  hosts: all
+  tasks:
+    - name: Ping hosts
+      ping:
+      tags:
+        - ping 
+
+# - name: Install Minikube and requirements
+#   hosts: all
+#   become: true
+#   roles:
+#     - docker
+#     - required_packages
+
+- name: Install Jenkins
+  hosts: jenkins_servers
+  become: true
+  roles:
+    - role: docker
+      vars:
+        docker_user: jenkins
+      tags: [docker]
+
+    - role: jenkins
+      tags: [jenkins]
+
+# - name: Install ArgoCD
+#   hosts: k8s_cluster
+#   become: yes
+#   tasks:
+#     - include_role:
+#       name: argocd
+#       tags:
+#         - k8s
+#         - argocd

@@ -1,0 +1,10 @@
+---
+# /roles/jenkins/tasks/main.yml
+
+- name: Jenkins installation
+  include_tasks: "jenkins_install_{{ ansible_os_family|lower }}.yml"
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
+  tags:
+    - jenkins
+    - jenkins_install
+  

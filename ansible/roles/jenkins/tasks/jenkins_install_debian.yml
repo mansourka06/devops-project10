@@ -1,0 +1,79 @@
+---
+# roles/jenkins/tasks/jenkins_install.yml
+
+- name: Start jenkins installation
+  debug:
+    msg: "Launch Jenkins installation"
+
+- name: Update and Upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install necessary prerequisites packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ prerequisites_packages }}"
+
+- name: Install Java(OpenJDK) dependance package
+  package:
+    name: "{{ openjdk_version | default('default-jdk') }}"
+    state: present
+
+- name: Add Jenkins repository key
+  get_url:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    dest: /usr/share/keyrings/jenkins-keyring.asc
+
+- name: Add Jenkins apt repository entry
+  shell: |
+    echo 'deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/' | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+- name: Update local apt index
+  apt:
+    update_cache: yes
+
+- name: Install Jenkins package
+  apt:
+    name: jenkins
+    state: present
+
+- name: Check if jenkins package is installed
+  stat:
+    path: "/usr/share/java/jenkins.war"
+  register: jenkins_install
+
+- name: Start Jenkins service
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+  register: jenkins_service
+  when: jenkins_install.stat.exists == true
+
+- block:
+    - name: Debug message for Jenkins installation status
+      debug:
+        msg: "Jenkins is {{ 'successfully installed and running...!' if jenkins_install.stat.exists == true else 'not installed correctly!' }}"
+
+    - name: Test Jenkins web UI access
+      uri:
+        url: "http://{{ jenkins_host }}:{{ jenkins_port }}"
+        method: GET
+        return_content: no
+      register: jenkins_web_ui_response
+
+    - name: Debug message for Jenkins web UI access
+      debug:
+        msg: "Jenkins web UI access {{ 'successful' if jenkins_web_ui_response.status == 200 else 'failed' }} from http://{{ jenkins_host }}:{{ jenkins_port }}"
+
+    - name: Get Jenkins initial admin password
+      shell: |
+        cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_int_pwd
+
+    - name: Debug jenkins initial admin password
+      debug:
+        msg: "Jenkins initial admin password is: {{ jenkins_int_pwd.stdout }}"
+  when: jenkins_install.stat.exists == true
