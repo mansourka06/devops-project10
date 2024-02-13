@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+  # set vagrant image
+  config.vm.box = "debian/buster64"
+  config.vm.box_url = "debian/buster64"
+
+	# set servers list and their parameters
+	NODES = [
+  	{ :hostname => "minikube", :ip => "192.168.56.80", :cpus => 4, :mem => 2096},
+  	{ :hostname => "jenkins-server", :ip => "192.168.56.81", :cpus => 2, :mem => 1096}
+	]
+
+	 # Initialize etcHosts as an empty string
+   etcHosts = ""
+   # Define /etc/hosts for all servers
+   NODES.each do |node|
+     etcHosts += "echo '#{node[:ip]}   #{node[:hostname]}' >> /etc/hosts" + "\n"
+   end  #end NODES
+
+	# run installation
+  NODES.each do |node|
+    config.vm.define node[:hostname] do |cfg|
+			cfg.vm.hostname = node[:hostname]
+      cfg.vm.network "private_network", ip: node[:ip]
+      cfg.vm.provider "virtualbox" do |v|
+				v.customize [ "modifyvm", :id, "--cpus", node[:cpus] ]
+        v.customize [ "modifyvm", :id, "--memory", node[:mem] ]
+        v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        v.customize ["modifyvm", :id, "--name", node[:hostname] ]
+      end #end provider
+    end #end config
+  end # #end nodes
+  
+  # Provisioning scripts
+  config.vm.provision "shell", inline: etcHosts
+end  
