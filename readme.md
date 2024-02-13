@@ -75,11 +75,14 @@ vagrant up
 5. Configure Jenkins jobs for your CI/CD pipeline to build and push docker images to your repository(DockerHub for this project).
 
 6. Start deploying and managing the Nodejs containerized app using Docker, Kubernetes, and Argo-CD.
+
+### Project Status
+In Progress...
  
 
- >Let's Enjoy Sharing :)  
+> Let's Enjoy Sharing :)  
 
 
 ## Author
-Mansour KA
+[Mansour KA](https://github.com/mansourka06)
 
