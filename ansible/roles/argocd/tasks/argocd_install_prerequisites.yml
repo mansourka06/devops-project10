@@ -1,0 +1,40 @@
+---
+# tasks file for argocd_install_prerequisites
+
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - curl
+    - git
+
+- name: Install Argo CLI
+  shell: |
+    curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64
+    chmod +x /usr/local/bin/argo
+  args:
+    executable: /bin/bash
+  register: argocd_install_cli
+
+- name: Verify if Argo CD UI is reachable
+  uri:
+    url: "http://{{ argocd_host }}:{{ argocd_port }}"
+    method: GET
+    status_code: 200
+  register: response
+  when: argocd_install_cli.rc == "0"
+
+- name: Display result
+  debug:
+    var: response
+
+- name: Fail if response status is not 200
+  fail:
+    msg: "Argo CD UI is unreachable!"
+  when: response.status != 200
+
+- name: Argo result install
+  debug:
+    msg: "ArgoCD  CLI as been installed sucessfully on {{ ansible_hostname }}"
+  when: response.status == "200"
