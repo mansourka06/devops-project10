@@ -9,5 +9,5 @@ prerequisites_packages:
 
 openjdk_version: openjdk-17-jre
 
-jenkins_host: localhost
+jenkins_host: "{{ ansible_default_ipv4.address }}"
 jenkins_port: 8080
