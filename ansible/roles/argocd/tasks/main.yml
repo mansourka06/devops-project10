@@ -15,15 +15,15 @@
     - install
   when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
-- name: Create Argo CD workflow
-  import_tasks: argocd_create_workflow.yml
+- name: Create Argo CD test app deployment
+  import_tasks: argocd_test_deploy_app.yml
   tags: 
-    - argcd_create_workflow
-    - create_workflow
+    - test_deploy_app
+    - test
   when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
-- name: Uninstall argocd
-  import_tasks: argocd_uninstall.yaml
+- name: Uninstall argocd package
+  import_tasks: argocd_uninstall.yml
   tags:
     - argocd_uninstall
     - uninstall
