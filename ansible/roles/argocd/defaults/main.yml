@@ -1,5 +1,9 @@
 ---
 # defaults file for ansible/roles/argocd
-
+packages_dependencies:
+  - curl
+  - wget
+  - git
+  
 argocd_host: "{{ ansible_default_ipv4.address }}"
 argocd_port: 8080
