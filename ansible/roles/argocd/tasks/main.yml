@@ -6,15 +6,18 @@
   tags:
     - argocd_install
     - install
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
 - name: ArgoCD workflow creation
   import_tasks: argocd_create_workflow.yml
   tags: 
     - argcd_create_workflow
     - create_workflow
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
 - name: Uninstall argocd
   import_tasks: argocd_uninstall.yaml
   tags:
     - never
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 ...
