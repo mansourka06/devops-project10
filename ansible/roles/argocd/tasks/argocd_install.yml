@@ -8,7 +8,6 @@
   loop:
     - curl
     - git
-  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
 - name: Install Argo CLI
   shell: |
@@ -17,7 +16,6 @@
   args:
     executable: /bin/bash
   register: argocd_install
-  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
 - name: Verify Argo CD UI is reachable
   uri:
