@@ -1,0 +1,8 @@
+---
+# tasks file for minikube
+
+- name: Install minikube requirements
+  import_tasks: minikube_prerequisites_install.yml
+
+- name: Install minikube binary
+  import_tasks: minikube_install.yml
