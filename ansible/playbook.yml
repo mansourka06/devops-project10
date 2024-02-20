@@ -32,8 +32,8 @@
   hosts: k8s_cluster
   become: yes
   roles:
-    - role: k8s
-      tags: [k8s]
+    - role: minikube
+      tags: [minikube]
     - role: argocd
       tags: [argocd]
 
