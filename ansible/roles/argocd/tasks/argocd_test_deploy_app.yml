@@ -1,0 +1,15 @@
+---
+# tasks file for argocd_test_deploy_app.yml
+
+- name: Create Argo CD test app deployement
+  shell: |
+    kubectl config set-context --current --namespace=argocd
+    argocd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-server https://kubernetes.default.svc --dest-namespace default
+  args:
+    executable: /bin/bash
+  register: argocd_app_deploy
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
+
+- name: 
+    debug: "Arg CD example-app deployement succed, Verify it from Argo CD UI"
+  when: argocd_app_deploy.rc == "0"
