@@ -1,14 +1,21 @@
 ---
 # tasks file for ansible/roles/argocd/main.yml
 
-- name: ArgoCD installation
+- name: Install Argo CD dependances
+  import_tasks: argocd_prerequisistes_install.yml
+  tags:
+    - argocd_install
+    - install
+  when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
+  
+- name: Install Argo CD
   import_tasks: argocd_install.yml
   tags:
     - argocd_install
     - install
   when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 
-- name: ArgoCD workflow creation
+- name: Create Argo CD workflow
   import_tasks: argocd_create_workflow.yml
   tags: 
     - argcd_create_workflow
@@ -18,6 +25,8 @@
 - name: Uninstall argocd
   import_tasks: argocd_uninstall.yaml
   tags:
+    - argocd_uninstall
+    - uninstall
     - never
   when: ansible_pkg_mgr == 'apt' or ansible_pkg_mgr == 'yum'
 ...
