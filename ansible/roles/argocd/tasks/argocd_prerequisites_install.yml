@@ -7,9 +7,17 @@
   loop: "{{ packages_dependencies }}"
 
 - name: Install Argo CLI
-  shell: |
-    curl -sSL -o /usr/local/bin/argo https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64
-    chmod +x /usr/local/bin/argo
-  args:
-    executable: /bin/bash
+  get_url:
+    url: https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64
+    dest: /usr/local/bin/argo
+    mode: 0755
+    force: true
   register: argocd_install
+
+- name: Kubectl Install
+  get_url:
+    url: https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: 0755
+    force: true
+  register: kubectl_install
