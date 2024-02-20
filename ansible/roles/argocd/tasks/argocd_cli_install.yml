@@ -1,5 +1,5 @@
 ---
-# tasks file for argocd_install
+# tasks file for argocd_cli_install
 
 - name: Install dependencies
   package:
