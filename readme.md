@@ -4,7 +4,7 @@
 Welcome to the End-to-End DevOps Project guide! In this comprehensive project, we will walk through the process of setting up a robust CI/CD infra, DevOps best practices, and security measures. This project aims to provide hands-on experience in automating, configuring and deploying a scalable application environment.
 
 ## Description
-- Welcome to my DevOps CI/CD project! This project aims to demonstrate continuous integration and continuous deployment (CI/CD) practices using a variety of tools.
+- This project aims to demonstrate continuous integration and continuous deployment (CI/CD) practices using a variety of tools.
 
 - Then, the goal is to deploy a NodeJs App on **Kubernetes** Cluster and Automating it with **Argo CD** and **Ansible** via **Jenkins** Pipeline.
 For this we are using **Vagrant** to create a base instance called the jenkins server than from this intance we setup pipeline, which build docker image and push it to DockerHub, than setup **minikube** instance and **ArgoCD** inside it to deploy the application. We chose **Ansible** to automate the installation of all tools used in this project.
