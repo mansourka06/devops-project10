@@ -1,5 +1,5 @@
 # DevOps CI/CD Project10
-- Welcome to my DevSecOps CI/CD project! This project aims to demonstrate continuous integration and continuous deployment (CI/CD) practices using a variety of tools.
+- Welcome to my DevOps CI/CD project! This project aims to demonstrate continuous integration and continuous deployment (CI/CD) practices using a variety of tools.
 
 - Then, the goal is to deploy a NodeJs App on **Kubernetes** Cluster and Automating it with **Argo CD** and **Ansible** via **Jenkins** Pipeline.
 For this we are using **Vagrant** to create a base instance called the jenkins server than from this intance we setup pipeline, which build docker image and push it to DockerHub, than setup **minikube** instance and **ArgoCD** inside it to deploy the application. We chose **Ansible** to automate the installation of all tools used in this project.
@@ -12,38 +12,23 @@ Tools you must know for a deep understanding of this project or before doing it.
 - [Ansible](https://docs.ansible.com/ansible/latest/)
 - [Jenkins](https://www.jenkins.io/doc/)
 - [Docker](https://docs.docker.com/)
-- [Kubernetes](https://kubernetes.io/docs/home/)
-- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Kubernetes](https://kubernetes.io/docs/home/) ==> [Miniube](https://minikube.sigs.k8s.io/docs/start/)
 - [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
 
 
-## Definition of Used Tools
-- ### Git
-Git is utilized as the local version control system for managing our project's source code efficiently.
+## Used Tools
+- **Git and GitHub** : Git is used as version control system and GitHub to manage the project's source code efficiently.
 
-- ### GitHub
-GitHub serves as our distributed version control system (DVCS), allowing collaboration, code review, and version management among team members.
+- **Ansible** :  I choose this wonderfull configuration management and deployment tool to automate the installation of all the tools needed on this project.
+- 
+- **Jenkins** : Then, i have used jenkins to create the CI/CD pipeline to automate the building, tests, and the deployment of the NodeJs Container.
 
-- ### Jenkins
-We have set up a Jenkins server using a Vagrant file. This server automates the CI/CD pipeline by building, testing, and deploying our application. The setup includes:
+- **Docker** : i used Docker for the containerization of the NodeJS application.
 
-- Installation of Java
-- Installation of Jenkins
-- Installation of docker as a build tool
-
-- ### Ansible
-Ansible is our chosen configuration management and deployment tool. It helps us automate the setup and configuration of our infrastructure and deployment processes and tools installation.
-
-- ### Docker
-We use Docker for containerization, enabling us to package our application and its dependencies into lightweight, portable containers.
-
-- ### Kubernetes
-Kubernetes serves as our container management tool, providing orchestration and automation for deploying, scaling, and managing containerized applications.
-
-- ### Argo CD
-Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes which automate and manage application deployments and lifecycle.
+- **Argo CD** :  for GitOps continuous delivery tool for Kubernetes which automate and manage application deployments and lifecycle.
 
 ## Completion steps 
+
 - **Step 1**: → Setup Vagrantfile to deploy and configure a simple Infrastructure(servers). 
 
 - **Step 2**: → Create Ansible roles to automate the provisioning of our infrastructure: installation and configuration of Jenkins, Docker, minikube and ArgoCD.

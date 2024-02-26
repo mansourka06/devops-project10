@@ -1,0 +1,38 @@
+---
+# tasks file for argocd_install
+
+- name: Create namespace argocd and create argocd K8s Pod
+  shell: |
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  args:
+    executable: /bin/bash
+  register: argocd_install
+
+- name: Verify Argo Installation
+  block:
+    - name: Verify Argo CD UI is reachable
+      uri:
+        url: "http://{{ argocd_host }}:{{ argocd_port }}"
+        method: GET
+        status_code: 200
+      register: response
+
+    - name: Display result
+      debug:
+        var: response
+
+    - name: Fail if response status is not 200
+      fail:
+        msg: "Argo CD UI is not reachable!"
+      when: response.status != 200
+
+    - name: Argo result install
+      debug:
+        msg: "ArgoCD  CLI as been installed sucessfully on {{ ansible_hostname }}"
+      when: response.status == "200"
+  when: argocd_install.rc == "0"
+  rescue:
+    - name: Debug task when if argo CD isntall failed
+      debug:
+        msg: "Argo CD  is not installed correctly on {{ ansible_hostname }}"

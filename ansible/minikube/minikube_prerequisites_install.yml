@@ -1,0 +1,60 @@
+---
+- name: Check status of docker service
+  service_facts:
+
+- name: Fail docker service not running
+  fail:
+    msg: >
+      minikube driver selected as docker but docker service  is not running
+  when:
+    - minikube_driver == "docker" and ansible_facts.services["docker.service"].state == "stopped"
+
+- block:
+  - name: Get latest version number from github
+    set_fact:
+       _latest: "{{ lookup('url', 'https://storage.googleapis.com/kubernetes-release/release/stable.txt') | string }}"
+    run_once: true
+  - debug:
+      var: _latest
+  delegate_to: localhost
+
+- name: Kubectl Install tasks
+  block:
+    - name: Download kubectl latest binary to local folder
+      become: false
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/{{_latest}}/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+      when: kubectl_install and kubectl_version == "latest"
+
+    - name: Download kubectl specified version binary to local folder
+      become: false
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/v{{kubectl_version}}/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl"
+        mode: '0644'
+      register: _download_binary
+      until: _download_binary is succeeded
+      retries: 5
+      delay: 2
+      delegate_to: localhost
+      check_mode: false
+      when: kubectl_install and kubectl_version != "latest"
+
+    - name: Move kubectl binary to install folder
+      copy:
+        src: "/tmp/kubectl"
+        dest: "{{ _kubectl_install_dir }}/kubectl"
+        mode: 0755
+        owner: root
+        group: root
+      when: kubectl_install
+
+...

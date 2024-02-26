@@ -1,0 +1,8 @@
+# argocd argocd_uninstall tasks
+
+- name: Remove Argo CD installation package
+  file:
+    path: /usr/local/bin/argocd
+    state: absente
+  register: argocd_uninstall
+  when: ansible_system == "Linux"

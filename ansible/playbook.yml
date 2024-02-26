@@ -8,15 +8,15 @@
       ping:
       tags:
         - ping 
+        - always
 
-# - name: Install Minikube and requirements
-#   hosts: all
-#   become: true
-#   roles:
-#     - docker
-#     - required_packages
+- name: Install Docker in all servers
+  hosts: all
+  become: true
+  roles:
+    - docker
 
-- name: Install Jenkins
+- name:  Setup the Jenkins
   hosts: jenkins_servers
   become: true
   roles:
@@ -28,12 +28,13 @@
     - role: jenkins
       tags: [jenkins]
 
-# - name: Install ArgoCD
-#   hosts: k8s_cluster
-#   become: yes
-#   tasks:
-#     - include_role:
-#       name: argocd
-#       tags:
-#         - k8s
-#         - argocd
+- name: Setup K8s Cluster and Install ArgoCD
+  hosts: k8s_cluster
+  become: yes
+  roles:
+    - role: minikube
+      tags: [minikube]
+    - role: argocd
+      tags: [argocd]
+
+...

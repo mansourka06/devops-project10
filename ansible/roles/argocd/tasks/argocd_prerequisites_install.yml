@@ -1,0 +1,23 @@
+# tasks file for argocd_prerequisities_install
+
+- name: Install dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages_dependencies }}"
+
+- name: Install Argo CLI
+  get_url:
+    url: https://github.com/argoproj/argo/releases/latest/download/argo-linux-amd64
+    dest: /usr/local/bin/argo
+    mode: 0755
+    force: true
+  register: argocd_install
+
+- name: Kubectl Install
+  get_url:
+    url: https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: 0755
+    force: true
+  register: kubectl_install
